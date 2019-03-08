@@ -12,25 +12,29 @@ public class Client {
     public static void main(String[] args) throws IOException {
 
         try (Socket socket = new Socket(HOST, PORT);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+             FileReader file = new FileReader("src/main/java/com/ozzot/networking/client/json.txt");
+             BufferedReader fileReader = new BufferedReader(file);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
-            JSONObject jsonRequest = new JSONObject();
-
-//            System.out.println(jsonRequest.put("type", "getAll").toString());
-            System.out.println(jsonRequest.put("type", "getById").put("id", 2).toString());
-
             while (true) {
-                writer.write(jsonRequest.toString() + "\n");
+                System.out.println("+----------------------------------------+");
+                System.out.println("| Press 'Enter' to read JSON for request |");
+                System.out.println("+----------------------------------------+");
+
+                String json = fileReader.readLine();
+
+                if (scanner.readLine().equals("@") || json == null) {
+                    break;
+                }
+
+                writer.write(json + "\n");
                 writer.flush();
 
                 JSONObject jsonServerResponse = new JSONObject(reader.readLine());
                 System.out.println("Server's respond: " + jsonServerResponse);
 
-                if (scanner.readLine().equals("@")) {
-                    break;
-                }
             }
         }
     }

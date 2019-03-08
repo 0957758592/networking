@@ -20,7 +20,7 @@ public class DatabaseConnector {
 
         JSONObject jsonResponse = new JSONObject();
 
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
 
         while (keys.hasNext()) {
             String key = keys.next();
