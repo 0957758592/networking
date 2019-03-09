@@ -8,10 +8,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.ozzot.networking.constants.Constants.QUERY;
+
 
 public class DatabaseConnector {
 
-    private static final String QUERY = "SELECT id, name, dateOfBirth, salary, driverLicense, address FROM user;";
 
     public static Object getDataFromDatabase(Connection connection, Object json) throws SQLException {
 
