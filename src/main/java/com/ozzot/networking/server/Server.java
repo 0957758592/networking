@@ -3,6 +3,7 @@ package com.ozzot.networking.server;
 import static com.ozzot.networking.constants.Constants.*;
 
 import com.ozzot.networking.utils.DatabaseConnector;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -16,31 +17,54 @@ public class Server {
 
     public static void main(String[] args) throws IOException, SQLException {
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             ServerSocket serverSocket = new ServerSocket(PORT);
-             Socket socket = serverSocket.accept();
-             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            ServerSocket serverSocket = new ServerSocket(PORT);
+            Socket socket = serverSocket.accept();
 
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
-            while (true) {
+                while (true) {
 
-                String line = reader.readLine();
+                    String jsonObject = getJsonFromInputStream(reader);
 
-                if (line != null) {
+                    if (jsonObject != null && isJsonValid(jsonObject)) {
 
-                    JSONObject jsonClientRequest = new JSONObject(line);
+                        JSONObject jsonClientRequest = new JSONObject(jsonObject);
 
-                    JSONObject jsonServerResponse = (JSONObject) DatabaseConnector.getDataFromDatabase(connection, jsonClientRequest);
-                    writer.write(jsonServerResponse.toString() + "\n");
-                    writer.flush();
+                        Object jsonServerResponse = DatabaseConnector.getDataFromDatabase(connection, jsonClientRequest);
+                        writer.write(jsonServerResponse.toString() + "\n");
+                        writer.flush();
 
-                } else {
-                    System.out.println("Client disconnected");
-                    break;
+                    }
+
                 }
-            }
 
+            }
         }
+    }
+
+    private static String getJsonFromInputStream(BufferedReader reader) throws IOException {
+
+        String line;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("}")) {
+                return stringBuilder.append(line).toString();
+            }
+            stringBuilder.append(line);
+        }
+
+        return null;
+    }
+
+    private static boolean isJsonValid(String line) {
+        try {
+            new JSONObject(line);
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
     }
 }

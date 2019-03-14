@@ -23,19 +23,24 @@ public class Client {
                 System.out.println("| Press 'Enter' to read JSON for request |");
                 System.out.println("+----------------------------------------+");
 
-                String json = fileReader.readLine();
-
-                if (scanner.readLine().equals("@") || json == null) {
+                if (scanner.readLine().equals("@")) {
                     break;
                 }
+
+                String json = fileReader.readLine();
+                System.out.println("J: " + json);
+
 
                 writer.write(json + "\n");
                 writer.flush();
 
-                JSONObject jsonServerResponse = new JSONObject(reader.readLine());
-                System.out.println("Server's respond: " + jsonServerResponse);
-
+                if (json.contains("}")) {
+                    System.out.println("contains: ");
+                    JSONObject jsonServerResponse = new JSONObject(reader.readLine());
+                    System.out.println("Server's respond: " + jsonServerResponse);
+                }
             }
+
         }
     }
 

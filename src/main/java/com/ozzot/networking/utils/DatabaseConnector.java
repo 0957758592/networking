@@ -1,22 +1,17 @@
 package com.ozzot.networking.utils;
 
-import org.json.JSONArray;
+import com.ozzot.networking.jdbc.JDBC;
 import org.json.JSONObject;
 
 import java.sql.*;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-import static com.ozzot.networking.constants.Constants.QUERY;
-
+import static com.ozzot.networking.constants.Constants.*;
 
 public class DatabaseConnector {
 
+    public static JSONObject getDataFromDatabase(Connection connection, JSONObject jsonRequest) throws SQLException {
 
-    public static Object getDataFromDatabase(Connection connection, Object json) throws SQLException {
-
-        JSONObject jsonRequest = new JSONObject(json.toString());
         Iterator<String> keys = jsonRequest.keys();
 
         JSONObject jsonResponse = new JSONObject();
@@ -26,18 +21,22 @@ public class DatabaseConnector {
         while (keys.hasNext()) {
             String key = keys.next();
 
+            System.out.println("KEY" + key);
+
             if (key.equals("type")) {
 
-                if (jsonRequest.getString(key).equals("getAll")) {
+                String keyParam = jsonRequest.getString(key);
+
+                if (keyParam.equals("getAll")) {
 
                     preparedStatement = connection.prepareStatement(QUERY);
-                    getTableData(preparedStatement, jsonResponse, true);
+                    JDBC.getTableData(preparedStatement, jsonResponse, true);
 
-                } else if (jsonRequest.getString(key).equals("getById")) {
+                } else if (keyParam.equals("getById")) {
 
-                    preparedStatement = connection.prepareStatement(QUERY.replace(";", " ") + "WHERE ID = ?");
+                    preparedStatement = connection.prepareStatement(QUERY_BY_ID);
                     preparedStatement.setInt(1, jsonRequest.getInt("id"));
-                    getTableData(preparedStatement, jsonResponse, false);
+                    JDBC.getTableData(preparedStatement, jsonResponse, false);
 
                 } else {
 
@@ -49,29 +48,5 @@ public class DatabaseConnector {
         return jsonResponse;
     }
 
-    private static void getTableData(PreparedStatement preparedStatement, JSONObject jsonResponse, boolean array) throws SQLException {
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-
-        Map<String, Object> tableData = new HashMap<>();
-        JSONArray jsonArray = new JSONArray();
-
-        while (resultSet.next()) {
-
-            for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
-
-                tableData.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
-            }
-
-            if (array) {
-                jsonArray.put(tableData);
-            }
-        }
-
-        Object jsonObject = array ? jsonArray : tableData;
-
-        jsonResponse.put(resultSetMetaData.getTableName(1), jsonObject);
-    }
 
 }

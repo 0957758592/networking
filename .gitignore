@@ -3,6 +3,7 @@
 /src/main/resources
 /src/main/java/com/ozzot/networking/client/Client2.java
 /src/main/java/com/ozzot/networking/utils/Json.java
+/src/main/java/com/ozzot/networking/utils/Checker.java
 /src/main/java/com/ozzot/networking/Client.java
 /src/main/java/com/ozzot/networking/Server.java
 
