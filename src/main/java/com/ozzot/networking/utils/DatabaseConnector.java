@@ -11,8 +11,6 @@ public class DatabaseConnector {
 
     public static Object getDataFromDatabase(Connection connection, JSONObject jsonRequest) throws SQLException {
 
-        JSONObject jsonResponse = new JSONObject();
-
         PreparedStatement preparedStatement;
 
         if (jsonRequest.has("type")) {
@@ -22,7 +20,7 @@ public class DatabaseConnector {
             if (keyParam.equals("getAll")) {
 
                 preparedStatement = connection.prepareStatement(QUERY);
-                return JDBC.getDatabaseTableData(preparedStatement, true);
+                return JDBC.getObjectDataFromDatabase(preparedStatement, true);
 
             } else if (keyParam.equals("getById")) {
 
@@ -30,19 +28,15 @@ public class DatabaseConnector {
 
                 if (jsonRequest.toString().contains("id")) {
                     preparedStatement.setInt(1, jsonRequest.getInt("id"));
-                    return JDBC.getDatabaseTableData(preparedStatement, false);
+                    return JDBC.getObjectDataFromDatabase(preparedStatement, false);
                 }
 
             } else {
-
-                return jsonResponse.put("", "");
+                return new JSONObject().put("", "");
             }
-        } else {
-
-            return jsonResponse.put("", "");
         }
 
-        return jsonResponse;
+        return new JSONObject().put("", "");
     }
 
 }

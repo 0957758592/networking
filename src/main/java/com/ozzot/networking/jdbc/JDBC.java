@@ -10,28 +10,29 @@ import java.sql.SQLException;
 
 public class JDBC {
 
-    public static Object getDatabaseTableData(PreparedStatement preparedStatement, boolean array) throws SQLException {
+    public static Object getObjectDataFromDatabase(PreparedStatement preparedStatement, boolean array) throws SQLException {
 
         ResultSet resultSet = preparedStatement.executeQuery();
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 
-        JSONObject tableData = new JSONObject();
+        JSONObject jsonObject = null;
 
         JSONArray jsonArray = new JSONArray();
 
         while (resultSet.next()) {
+            jsonObject = new JSONObject();
 
             for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
 
-                tableData.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
+                jsonObject.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
             }
 
             if (array) {
-                jsonArray.put(tableData);
+                jsonArray.put(jsonObject);
             }
         }
 
-        return array ? jsonArray : tableData;
+        return array ? jsonArray : jsonObject;
 
     }
 
