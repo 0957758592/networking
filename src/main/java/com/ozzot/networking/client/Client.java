@@ -1,7 +1,5 @@
 package com.ozzot.networking.client;
 
-import org.json.JSONObject;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -28,17 +26,15 @@ public class Client {
                 }
 
                 String json = fileReader.readLine();
-                System.out.println("J: " + json);
-
 
                 writer.write(json + "\n");
                 writer.flush();
 
                 if (json.contains("}")) {
-                    System.out.println("contains: ");
-                    JSONObject jsonServerResponse = new JSONObject(reader.readLine());
-                    System.out.println("Server's respond: " + jsonServerResponse);
+                    String line = reader.readLine();
+                    System.out.println("Server's respond: " + line);
                 }
+
             }
 
         }

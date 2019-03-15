@@ -36,10 +36,11 @@ public class Server {
                         writer.write(jsonServerResponse.toString() + "\n");
                         writer.flush();
 
+                    } else {
+                        System.out.println("Client disconnected");
+                        break;
                     }
-
                 }
-
             }
         }
     }
