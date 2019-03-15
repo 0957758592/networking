@@ -15,7 +15,8 @@ public class DatabaseConnectorTest {
 
     private static final JSONObject JSON_OBJECT = new JSONObject("{\"address\":\"что-то там адресс\",\"name\":\"имя\",\"driverLicense\":false,\"dateOfBirth\":\"1970-01-01\",\"id\":2,\"salary\":30000.55}");
 
-    private static final JSONArray JSON_ARRAY = new JSONArray("[{\"address\":\"address\",\"name\":\"name\",\"driverLicense\":true,\"dateOfBirth\":\"1970-01-08\",\"id\":1,\"salary\":20000.555},{\"address\":\"что-то там адресс\",\"name\":\"имя\",\"driverLicense\":false,\"dateOfBirth\":\"1970-01-01\",\"id\":2,\"salary\":30000.55}]");
+    private static final JSONArray JSON_ARRAY = new JSONArray("[{\"address\":\"address\",\"name\":\"name\",\"driverLicense\":true,\"dateOfBirth\":\"1970-01-08\",\"id\":1,\"salary\":20000.555}," +
+            "{\"address\":\"что-то там адресс\",\"name\":\"имя\",\"driverLicense\":false,\"dateOfBirth\":\"1970-01-01\",\"id\":2,\"salary\":30000.55}]");
 
     private Connection connection;
 
