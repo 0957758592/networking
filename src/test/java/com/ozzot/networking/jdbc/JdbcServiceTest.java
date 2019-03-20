@@ -1,4 +1,4 @@
-package com.ozzot.networking.utils;
+package com.ozzot.networking.jdbc;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import java.sql.*;
 import static com.ozzot.networking.constants.Constants.*;
 import static org.junit.Assert.*;
 
-public class DatabaseConnectorTest {
+public class JdbcServiceTest {
 
     private static final JSONObject JSON_OBJECT = new JSONObject("{\"address\":\"что-то там адресс\",\"name\":\"имя\",\"driverLicense\":false,\"dateOfBirth\":\"1970-01-01\",\"id\":2,\"salary\":30000.55}");
 
@@ -41,13 +41,13 @@ public class DatabaseConnectorTest {
     public void getArrayDataFromDatabase() throws SQLException {
         jsonRequest = new JSONObject("{\"type\":\"getAll\"}");
 
-//        assertEquals(JSON_ARRAY.toString(), DatabaseConnector.getDataFromDatabase(jsonRequest).toString());
+        assertEquals(JSON_ARRAY.toString(), JdbcService.getDataFromDatabase(jsonRequest));
     }
 
     @Test
     public void getObjectDataFromDatabase() throws SQLException {
         jsonRequest = new JSONObject("{\"id\":2,\"type\":\"getById\"}");
 
-//        assertEquals(JSON_OBJECT.toString(), DatabaseConnector.getDataFromDatabase(jsonRequest).toString());
+        assertEquals(JSON_OBJECT.toString(), JdbcService.getDataFromDatabase(jsonRequest));
     }
 }
