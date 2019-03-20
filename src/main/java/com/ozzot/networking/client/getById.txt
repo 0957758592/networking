@@ -1,7 +1,4 @@
 {
-    "type":"getAll"
-},
-{
     "id":2,
     "type":"getById"
 }
