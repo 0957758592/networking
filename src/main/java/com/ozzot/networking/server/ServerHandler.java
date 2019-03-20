@@ -28,6 +28,8 @@ public class ServerHandler {
                     writer.flush();
 
                 } else {
+                    writer.write("JSON Object not valid: "+jsonObject + "\n");
+                    writer.flush();
                     break;
                 }
             }
@@ -46,7 +48,7 @@ public class ServerHandler {
         return stringBuilder.toString();
     }
 
-    private static boolean isJsonValid(String line) {
+    static boolean isJsonValid(String line) {
         try {
             new JSONObject(line);
         } catch (JSONException e) {

@@ -1,7 +1,6 @@
 package com.ozzot.networking.jdbc;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.*;
@@ -27,12 +26,12 @@ public class JdbcService {
                     return getById(connection, jsonRequest);
 
                 } else {
-                    throw new JSONException("JSON value has Error");
+                    return new JSONObject().put("JSON should has type 'getAll' or 'getById' => Error => ", jsonRequest).toString();
                 }
             }
+            return new JSONObject().put("JSON has no key " + TYPE +" => Error => ", jsonRequest).toString();
         }
 
-        throw new JSONException("JSON key '" + TYPE + "' has Error");
     }
 
     private static String getById(Connection connection, JSONObject jsonRequest) throws SQLException {
@@ -40,7 +39,7 @@ public class JdbcService {
         PreparedStatement preparedStatement = connection.prepareStatement(QUERY_BY_ID);
 
         if (!jsonRequest.has(ID)) {
-            throw new JSONException("ID not found");
+            return new JSONObject().put(" key 'ID' not found => Error => ", jsonRequest).toString();
         }
 
         preparedStatement.setInt(1, jsonRequest.getInt(ID));
@@ -52,7 +51,6 @@ public class JdbcService {
         }
 
         return object.toString();
-
 
     }
 

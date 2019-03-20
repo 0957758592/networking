@@ -10,8 +10,8 @@ public class Client {
     public static void main(String[] args) throws IOException {
 
         try (Socket socket = new Socket(HOST, PORT);
-//             FileReader file = new FileReader("src/main/java/com/ozzot/networking/client/getAll.txt");
-             FileReader file = new FileReader("src/main/java/com/ozzot/networking/client/getById.txt");
+             FileReader file = new FileReader("src/main/java/com/ozzot/networking/client/getAll.txt");
+//             FileReader file = new FileReader("src/main/java/com/ozzot/networking/client/getById.txt");
              BufferedReader fileReader = new BufferedReader(file);
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {

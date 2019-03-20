@@ -1,4 +1,4 @@
 {
-    "id":2,
+    "ids":2,
     "type":"getById"
 }
