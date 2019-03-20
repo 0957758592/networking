@@ -54,15 +54,6 @@ public class JdbcServiceTest {
     }
 
     @Test
-    public void JsonTypeError() throws SQLException {
-        jsonRequest = new JSONObject("{\"id\":2,\"typ\":\"getById\"}");
-
-        String jsonTypeError = "{\"JSON has no key type => Error => \":{\"typ\":\"getById\",\"id\":2}}";
-
-        assertEquals(jsonTypeError, JdbcService.getDataFromDatabase(jsonRequest));
-    }
-
-    @Test
     public void JsonIdError() throws SQLException {
         jsonRequest = new JSONObject("{\"ids\":2,\"type\":\"getById\"}");
 
